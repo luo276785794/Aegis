@@ -1,4 +1,4 @@
-package com.wenlong.aegis;
+package com.wenlong.aegis.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

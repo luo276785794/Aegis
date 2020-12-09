@@ -4,17 +4,19 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.wenlong.aegis.Aegis;
+import com.wenlong.aegis.annotation.Aegis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +26,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            @Aegis(interval = 2000L, toastMsg = "你被禁用了！！！")
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.e("luo", String.format("x = %f, y = %f", v.getTranslationX(), v.getTranslationY()));
+                }
+                return false;
             }
         });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            @Aegis(interval = 2000L, toastMsg = "你被禁用了！！！")
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -54,5 +66,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    @Aegis(interval = 2000L, toastMsg = "禁用了！！！")
+    public void onClick(View v) {
+        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }
