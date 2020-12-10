@@ -31,8 +31,7 @@ public final class ContextUtil {
         Object[] args = point.getArgs();
         for (Object arg : args) {
             if (arg instanceof View) {
-                View view = (View) arg;
-                context = view.getContext();
+                context = ((View) arg).getContext();
                 break;
             }
         }

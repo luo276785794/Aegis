@@ -5,16 +5,19 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.wenlong.aegis.annotation.Aegis;
+import com.wenlong.aegis.common.AegisAccessibilityDelegate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,8 +27,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = findViewById(R.id.fab);
+       new Handler().postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               fab.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       fab.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+                   }
+               }, 2000);
+           }
+       }, 2000);
         fab.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -43,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        //fab.setAccessibilityDelegate(new AegisAccessibilityDelegate());
         fab.setOnClickListener(this);
     }
 
