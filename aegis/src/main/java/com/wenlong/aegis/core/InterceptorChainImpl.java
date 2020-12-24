@@ -2,7 +2,7 @@ package com.wenlong.aegis.core;
 
 import com.wenlong.aegis.annotation.Aegis;
 import com.wenlong.aegis.core.intercept.AegisInterceptor;
-import com.wenlong.aegis.core.intercept.InterceptorConfig;
+import com.wenlong.aegis.core.interfaces.InterceptorConfig;
 import com.wenlong.aegis.core.intercept.Process;
 
 import java.util.ArrayList;

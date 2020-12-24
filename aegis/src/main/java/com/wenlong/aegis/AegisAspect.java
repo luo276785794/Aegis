@@ -32,10 +32,11 @@ public class AegisAspect {
     @Around("clickMethod()")
     public void aegis(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
+
             final Object target = joinPoint.getTarget();
             if (target != null) {
-                setAccessibilityDelegate(joinPoint);
-                setTouchDelegate(joinPoint);
+                ViewUtil.setAccessibilityDelegate(joinPoint);
+                ViewUtil.hookOnTouchListener(joinPoint);
                 final Aegis aegis = getAegis(target);
                 if (!isIntercept(aegis)) {
                     joinPoint.proceed();
@@ -44,20 +45,17 @@ public class AegisAspect {
                 joinPoint.proceed();
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+            joinPoint.proceed();
         }
     }
 
-    private void setTouchDelegate(ProceedingJoinPoint joinPoint) {
-ViewUtil.hookOnTouchListener(joinPoint);
-    }
-
-    private boolean isIntercept(Aegis aegis) {
+    private synchronized boolean isIntercept(Aegis aegis) {
         boolean intercept = false;
         if (aegis != null) {
             final InterceptorManager manager = InterceptorManager.getInstance();
             manager.setConfig(aegis);
             intercept = manager.process();
+            Log.e("luo", intercept + "");
         }
         return intercept;
     }
@@ -76,19 +74,6 @@ ViewUtil.hookOnTouchListener(joinPoint);
         return aegis;
     }
 
-    private void setAccessibilityDelegate(ProceedingJoinPoint joinPoint) {
-        Log.d(TAG, "accessibilityClick");
-        List<View> clickViews = ViewUtil.getClickViews(joinPoint);
-        for (View view : clickViews) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                View.AccessibilityDelegate accessibilityDelegate = view.getAccessibilityDelegate();
-                if (!(accessibilityDelegate instanceof AegisAccessibilityDelegate)) {
-                    view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
-                }
-            } else {
-                view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
-            }
-        }
-    }
+
 
 }

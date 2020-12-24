@@ -1,7 +1,9 @@
 package com.example.aegisproject;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import com.wenlong.aegis.annotation.Aegis;
 
 public class FirstFragment extends Fragment {
 
+    private static final String TAG = "FirstFragment";
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -33,8 +36,15 @@ public class FirstFragment extends Fragment {
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
-
-        view.findViewById(R.id.ll_btn).setOnClickListener(new View.OnClickListener() {
+        final View layoutBtn = view.findViewById(R.id.ll_btn);
+        layoutBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "onTouch");
+                return false;
+            }
+        });
+        layoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             @Aegis
             public void onClick(View view) {

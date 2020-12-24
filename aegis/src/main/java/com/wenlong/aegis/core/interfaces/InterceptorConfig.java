@@ -1,4 +1,4 @@
-package com.wenlong.aegis.core.intercept;
+package com.wenlong.aegis.core.interfaces;
 
 import com.wenlong.aegis.annotation.Aegis;
 

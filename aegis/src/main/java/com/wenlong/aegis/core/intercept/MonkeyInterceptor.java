@@ -3,6 +3,8 @@ package com.wenlong.aegis.core.intercept;
 import android.app.ActivityManager;
 import android.util.Log;
 
+import com.wenlong.aegis.core.interfaces.InterceptorConfig;
+
 /**
  * Monkey检测
  */

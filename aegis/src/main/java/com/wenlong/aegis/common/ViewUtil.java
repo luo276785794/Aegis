@@ -1,9 +1,11 @@
 package com.wenlong.aegis.common;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.annotation.NonNull;
+import com.wenlong.aegis.core.intercept.OnHookTouchListener;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -37,7 +39,7 @@ public final class ViewUtil {
         return v;
     }
     @SuppressLint("DiscouragedPrivateApi")
-    public static View.OnTouchListener hookOnTouchListener(ProceedingJoinPoint point) {
+    public static void hookOnTouchListener(ProceedingJoinPoint point) {
         View v = getClickView(point);
         if (v != null) {
             try {
@@ -49,8 +51,8 @@ public final class ViewUtil {
                 Field onClickListenerField = listenerInfoClazz.getDeclaredField("mOnTouchListener");
                 onClickListenerField.setAccessible(true);
                 View.OnTouchListener onTouchListener = (View.OnTouchListener) onClickListenerField.get(listenerInfo);
-                if (onTouchListener != null) {
-
+                if (!(onTouchListener instanceof  OnHookTouchListener)) {
+                    v.setOnTouchListener(new OnHookTouchListener(onTouchListener));
                 }
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException |
@@ -58,6 +60,19 @@ public final class ViewUtil {
                 e.printStackTrace();
             }
         }
-        return null;
+    }
+
+    public static void setAccessibilityDelegate(ProceedingJoinPoint joinPoint) {
+        List<View> clickViews = ViewUtil.getClickViews(joinPoint);
+        for (View view : clickViews) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                View.AccessibilityDelegate accessibilityDelegate = view.getAccessibilityDelegate();
+                if (!(accessibilityDelegate instanceof AegisAccessibilityDelegate)) {
+                    view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+                }
+            } else {
+                view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+            }
+        }
     }
 }
