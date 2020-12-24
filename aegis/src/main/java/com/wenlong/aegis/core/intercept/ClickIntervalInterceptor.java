@@ -3,7 +3,6 @@ package com.wenlong.aegis.core.intercept;
 
 import android.util.Log;
 
-import com.wenlong.aegis.common.ClickEvent;
 import com.wenlong.aegis.core.interfaces.InterceptorConfig;
 
 import java.util.ArrayList;

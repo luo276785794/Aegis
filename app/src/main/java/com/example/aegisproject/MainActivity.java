@@ -1,6 +1,5 @@
 package com.example.aegisproject;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,7 +21,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

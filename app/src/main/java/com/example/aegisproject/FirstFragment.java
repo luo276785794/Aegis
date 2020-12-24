@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.wenlong.aegis.annotation.Aegis;
+import com.wenlong.aegis.core.interfaces.AegisIdentify;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements AegisIdentify {
 
     private static final String TAG = "FirstFragment";
     @Override
@@ -51,5 +52,10 @@ public class FirstFragment extends Fragment {
                 Log.e(TAG,  "click layout button");
             }
         });
+    }
+
+    @Override
+    public Object getIdentify() {
+        return 123;
     }
 }

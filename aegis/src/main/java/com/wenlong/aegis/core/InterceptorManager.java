@@ -6,6 +6,7 @@ import com.wenlong.aegis.annotation.Aegis;
 import com.wenlong.aegis.core.intercept.ClickIntervalInterceptor;
 import com.wenlong.aegis.core.intercept.ClickRectInterceptor;
 import com.wenlong.aegis.core.intercept.DisableInterceptor;
+import com.wenlong.aegis.core.interfaces.AegisIdentify;
 import com.wenlong.aegis.core.interfaces.InterceptorConfig;
 import com.wenlong.aegis.core.intercept.MonkeyInterceptor;
 import com.wenlong.aegis.core.interfaces.TouchEvent;
@@ -15,6 +16,7 @@ public class InterceptorManager {
     private static InterceptorManager sInstance = null;
     private final InterceptorChain mInterceptorChain;
     private final ClickRectInterceptor mClickRectInterceptor;
+    private AegisIdentify mAegisIdentify;
 
     private InterceptorManager() {
         mInterceptorChain = new InterceptorChainImpl();
@@ -48,6 +50,14 @@ public class InterceptorManager {
 
     public void setView(View v) {
         mInterceptorChain.setView(v);
+    }
+
+    public AegisIdentify getAegisIdentify() {
+        return mAegisIdentify;
+    }
+
+    public void setAegisIdentify(AegisIdentify aegisIdentify) {
+        this.mAegisIdentify = aegisIdentify;
     }
 
     public boolean process() {
