@@ -1,5 +1,7 @@
 package com.wenlong.aegis.core;
 
+import android.view.View;
+
 import com.wenlong.aegis.annotation.Aegis;
 import com.wenlong.aegis.core.intercept.ClickIntervalInterceptor;
 import com.wenlong.aegis.core.intercept.ClickRectInterceptor;
@@ -42,6 +44,10 @@ public class InterceptorManager {
 
     public void setConfig(Aegis aegis) {
         mInterceptorChain.setConfig(aegis);
+    }
+
+    public void setView(View v) {
+        mInterceptorChain.setView(v);
     }
 
     public boolean process() {

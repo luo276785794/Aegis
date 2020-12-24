@@ -48,7 +48,7 @@ public class FirstFragment extends Fragment {
             @Override
             @Aegis
             public void onClick(View view) {
-                Toast.makeText(getContext(), "click layout button", Toast.LENGTH_LONG).show();
+                Log.e(TAG,  "click layout button");
             }
         });
     }

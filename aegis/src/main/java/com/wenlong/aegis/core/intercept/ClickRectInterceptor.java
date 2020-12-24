@@ -8,12 +8,12 @@ import com.wenlong.aegis.core.interfaces.TouchEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class ClickRectInterceptor extends AegisInterceptor implements TouchEvent {
 
     private static final String TAG = "ClickRectInterceptor";
-    private List<ClickEvent> mEvents = new ArrayList<>(3);
+    private final List<ClickEvent> mEvents = new ArrayList<>(10);
+    private final Object lock = new Object();
 
     public ClickRectInterceptor(InterceptorConfig config) {
         super(config);
@@ -29,14 +29,17 @@ public class ClickRectInterceptor extends AegisInterceptor implements TouchEvent
 
     private boolean checkClick() {
         try {
-            if (mEvents.size() >= 3) {
-                final ClickEvent step1 = mEvents.get(0);
-                final ClickEvent step2 = mEvents.get(1);
-                final ClickEvent step3 = mEvents.get(2);
-                boolean same = step1.equals(step2) && step2.equals(step3);
-                Log.e(TAG, "ClickRectInterceptor: clear!!");
-                mEvents.clear();
-                return same;
+            synchronized (lock) {
+                final int size = mEvents.size();
+                if (size >= 3) {
+                    final ClickEvent step1 = mEvents.get(size - 3);
+                    final ClickEvent step2 = mEvents.get(size - 2);
+                    final ClickEvent step3 = mEvents.get(size - 1);
+                    boolean same = step1.equals(step2) && step2.equals(step3);
+                    Log.e(TAG, "ClickRectInterceptor: clear!!" + "size:" + size);
+                    mEvents.clear();
+                    return same;
+                }
             }
         } catch (Throwable ignored) {}
 
@@ -46,7 +49,9 @@ public class ClickRectInterceptor extends AegisInterceptor implements TouchEvent
 
     @Override
     public void onEvent(ClickEvent event) {
-
-        mEvents.add(event);
+        synchronized (lock) {
+            mEvents.add(event);
+            Log.e(TAG, "ClickRectInterceptor: add size = " + mEvents.size());
+        }
     }
 }

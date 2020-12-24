@@ -35,10 +35,12 @@ public class AegisAspect {
 
             final Object target = joinPoint.getTarget();
             if (target != null) {
-                ViewUtil.setAccessibilityDelegate(joinPoint);
-                ViewUtil.hookOnTouchListener(joinPoint);
+                final View v = ViewUtil.getClickView(joinPoint);
+                v.setTag(R.id.aegis_id, "");
+                ViewUtil.setAccessibilityDelegate(v);
+                ViewUtil.hookOnTouchListener(v);
                 final Aegis aegis = getAegis(target);
-                if (!isIntercept(aegis)) {
+                if (!isIntercept(v, aegis)) {
                     joinPoint.proceed();
                 }
             } else {
@@ -49,11 +51,12 @@ public class AegisAspect {
         }
     }
 
-    private synchronized boolean isIntercept(Aegis aegis) {
+    private synchronized boolean isIntercept(View v, Aegis aegis) {
         boolean intercept = false;
         if (aegis != null) {
             final InterceptorManager manager = InterceptorManager.getInstance();
             manager.setConfig(aegis);
+            manager.setView(v);
             intercept = manager.process();
             Log.e("luo", intercept + "");
         }

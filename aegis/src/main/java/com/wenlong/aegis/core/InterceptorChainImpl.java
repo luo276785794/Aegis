@@ -1,5 +1,7 @@
 package com.wenlong.aegis.core;
 
+import android.view.View;
+
 import com.wenlong.aegis.annotation.Aegis;
 import com.wenlong.aegis.core.intercept.AegisInterceptor;
 import com.wenlong.aegis.core.interfaces.InterceptorConfig;
@@ -12,7 +14,13 @@ public class InterceptorChainImpl implements InterceptorChain, InterceptorConfig
 
     private final List<Process> mChains = new ArrayList<>();
     private Aegis mAegis;
+    private View mView;
 
+
+    @Override
+    public void setView(View v) {
+        mView = v;
+    }
 
     @Override
     public void setConfig(Aegis aegis) {
@@ -43,5 +51,10 @@ public class InterceptorChainImpl implements InterceptorChain, InterceptorConfig
     @Override
     public Aegis getAegisConfig() {
         return mAegis;
+    }
+
+    @Override
+    public View getView() {
+        return mView;
     }
 }

@@ -39,8 +39,7 @@ public final class ViewUtil {
         return v;
     }
     @SuppressLint("DiscouragedPrivateApi")
-    public static void hookOnTouchListener(ProceedingJoinPoint point) {
-        View v = getClickView(point);
+    public static void hookOnTouchListener(View v) {
         if (v != null) {
             try {
                 Method listenerInfoMethod = View.class.getDeclaredMethod("getListenerInfo");
@@ -62,17 +61,14 @@ public final class ViewUtil {
         }
     }
 
-    public static void setAccessibilityDelegate(ProceedingJoinPoint joinPoint) {
-        List<View> clickViews = ViewUtil.getClickViews(joinPoint);
-        for (View view : clickViews) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                View.AccessibilityDelegate accessibilityDelegate = view.getAccessibilityDelegate();
-                if (!(accessibilityDelegate instanceof AegisAccessibilityDelegate)) {
-                    view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
-                }
-            } else {
+    public static void setAccessibilityDelegate(View view) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            View.AccessibilityDelegate accessibilityDelegate = view.getAccessibilityDelegate();
+            if (!(accessibilityDelegate instanceof AegisAccessibilityDelegate)) {
                 view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
             }
+        } else {
+            view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
         }
     }
 }
