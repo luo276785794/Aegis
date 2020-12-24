@@ -1,5 +1,6 @@
 package com.example.aegisproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                }, 2000);
            }
        }, 2000);
-        fab.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.e("luo", String.format("x = %f, y = %f", v.getTranslationX(), v.getTranslationY()));
-                }
-                return false;
+        fab.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                Log.e("luo", String.format("x = %f, y = %f", event.getX(), event.getY()));
             }
+            return false;
         });
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     @Aegis(interval = 2000L, toastMsg = "禁用了！！！")
     public void onClick(View v) {
-        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+//        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show();
     }
 }

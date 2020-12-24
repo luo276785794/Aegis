@@ -4,6 +4,7 @@ public class ClickRectInterceptor extends AegisInterceptor {
 
     public ClickRectInterceptor(InterceptorConfig config) {
         super(config);
+
     }
 
     @Override

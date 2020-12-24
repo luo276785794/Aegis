@@ -1,6 +1,5 @@
 package com.wenlong.aegis.core.intercept;
 
-import com.wenlong.aegis.core.InterceptorChainImpl;
 
 public class ClickIntervalInterceptor extends AegisInterceptor {
 

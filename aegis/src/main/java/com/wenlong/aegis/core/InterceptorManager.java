@@ -16,9 +16,9 @@ public class InterceptorManager {
         mInterceptorChain = new InterceptorChainImpl();
         InterceptorConfig config = (InterceptorConfig) mInterceptorChain;
         mInterceptorChain.add(new MonkeyInterceptor(config)).
+                add(new DisableInterceptor(config)).
                 add(new ClickIntervalInterceptor(config)).
-                add(new ClickRectInterceptor(config)).
-                add(new DisableInterceptor(config));
+                add(new ClickRectInterceptor(config));
 
     }
 

@@ -31,17 +31,25 @@ public class AegisAspect {
 
     @Around("clickMethod()")
     public void aegis(ProceedingJoinPoint joinPoint) throws Throwable {
-        final Object target = joinPoint.getTarget();
-        if (target != null) {
-            setAccessibilityDelegate(joinPoint);
-            final Aegis aegis = getAegis(target);
-            if (!isIntercept(aegis)) {
+        try {
+            final Object target = joinPoint.getTarget();
+            if (target != null) {
+                setAccessibilityDelegate(joinPoint);
+                setTouchDelegate(joinPoint);
+                final Aegis aegis = getAegis(target);
+                if (!isIntercept(aegis)) {
+                    joinPoint.proceed();
+                }
+            } else {
                 joinPoint.proceed();
             }
-        } else {
-            joinPoint.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
+    }
 
+    private void setTouchDelegate(ProceedingJoinPoint joinPoint) {
+ViewUtil.hookOnTouchListener(joinPoint);
     }
 
     private boolean isIntercept(Aegis aegis) {
@@ -72,7 +80,14 @@ public class AegisAspect {
         Log.d(TAG, "accessibilityClick");
         List<View> clickViews = ViewUtil.getClickViews(joinPoint);
         for (View view : clickViews) {
-            view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                View.AccessibilityDelegate accessibilityDelegate = view.getAccessibilityDelegate();
+                if (!(accessibilityDelegate instanceof AegisAccessibilityDelegate)) {
+                    view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+                }
+            } else {
+                view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+            }
         }
     }
 

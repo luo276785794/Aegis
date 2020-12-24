@@ -3,6 +3,9 @@ package com.wenlong.aegis.core.intercept;
 import android.app.ActivityManager;
 import android.util.Log;
 
+/**
+ * Monkey检测
+ */
 public class MonkeyInterceptor extends AegisInterceptor {
     public MonkeyInterceptor(InterceptorConfig config) {
         super(config);
