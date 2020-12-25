@@ -12,7 +12,7 @@ import java.util.List;
 public class ClickRectInterceptor extends AegisInterceptor implements TouchEvent {
 
     private static final String TAG = "ClickRectInterceptor";
-    private final List<ClickEvent> mEvents = new ArrayList<>(10);
+    private final List<ClickEvent> mEvents = new ArrayList<>(3);
     private final Object lock = new Object();
 
     public ClickRectInterceptor(InterceptorConfig config) {
@@ -36,6 +36,9 @@ public class ClickRectInterceptor extends AegisInterceptor implements TouchEvent
                     final ClickEvent step2 = mEvents.get(size - 2);
                     final ClickEvent step3 = mEvents.get(size - 1);
                     boolean same = step1.equals(step2) && step2.equals(step3);
+                    if (same) {
+                        recordBarrier();
+                    }
                     Log.e(TAG, "ClickRectInterceptor: clear!!" + "size:" + size);
                     mEvents.clear();
                     return same;

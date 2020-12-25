@@ -1,5 +1,7 @@
 package com.wenlong.aegis.annotation;
 
+import android.content.Context;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -24,6 +26,7 @@ public @interface Aegis {
     long disableTime() default 5000L;
 
     DisableStrategy strategy() default DisableStrategy.Regularity;
+
     /**
      * 按钮禁用时长规则
      */

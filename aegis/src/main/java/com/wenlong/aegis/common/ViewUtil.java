@@ -1,11 +1,14 @@
 package com.wenlong.aegis.common;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.wenlong.aegis.R;
 import com.wenlong.aegis.core.intercept.OnHookTouchListener;
+import com.wenlong.aegis.core.interfaces.AegisIdentify;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -69,6 +72,15 @@ public final class ViewUtil {
             }
         } else {
             view.setAccessibilityDelegate(new AegisAccessibilityDelegate());
+        }
+    }
+
+    public static void setViewId(View v, ProceedingJoinPoint joinPoint) {
+        if (v != null) {
+            final AegisIdentify identify = ContextUtil.getAegisIdentify(joinPoint);
+            if (identify != null && !TextUtils.isEmpty(identify.getIdentify())) {
+                v.setTag(R.id.view_id, identify.getIdentify());
+            }
         }
     }
 }

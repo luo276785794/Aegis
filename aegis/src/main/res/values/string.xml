@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xposed_remind">请卸载xposed后再重试</string>
+</resources>
