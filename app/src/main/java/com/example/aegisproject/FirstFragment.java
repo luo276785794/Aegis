@@ -55,7 +55,7 @@ public class FirstFragment extends Fragment implements AegisIdentify {
     }
 
     @Override
-    public Object getIdentify() {
-        return 123;
+    public String getIdentify() {
+        return "123";
     }
 }

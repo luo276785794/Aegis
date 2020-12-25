@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    @Aegis(interval = 2000L, toastMsg = "禁用了！！！")
+    @Aegis(interval = 2000L, toastMsg = "禁用了！！！",strategy = Aegis.DisableStrategy.Fibonacci)
     public void onClick(View v) {
 //        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show();

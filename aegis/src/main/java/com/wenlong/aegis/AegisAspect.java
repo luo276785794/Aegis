@@ -2,10 +2,12 @@ package com.wenlong.aegis;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.wenlong.aegis.annotation.Aegis;
 import com.wenlong.aegis.common.AegisAccessibilityDelegate;
 import com.wenlong.aegis.common.ContextUtil;
+import com.wenlong.aegis.common.FindHook;
 import com.wenlong.aegis.common.ViewUtil;
 import com.wenlong.aegis.core.InterceptorManager;
 
@@ -37,10 +39,19 @@ public class AegisAspect {
             final Object target = joinPoint.getTarget();
             if (target != null) {
                 final View v = ViewUtil.getClickView(joinPoint);
+                if (v != null && v.getContext() != null && FindHook.isHook(v.getContext())) {
+                    final String remind = v.getContext().getResources().getString(R.string.xposed_remind);
+                    Toast.makeText(v.getContext(), remind , Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 ViewUtil.setAccessibilityDelegate(v);
                 ViewUtil.hookOnTouchListener(v);
+                ViewUtil.setViewId(v, joinPoint);
                 if (!isIntercept(v,joinPoint)) {
                     joinPoint.proceed();
+                } else if (v != null){
+//                    v.setTag(R.id.barrier_time, 0);
+//                    v.setTag(R.id.trigger_count, 0);
                 }
             } else {
                 joinPoint.proceed();
@@ -51,7 +62,6 @@ public class AegisAspect {
         }
     }
 
-
     private synchronized boolean isIntercept(View v, ProceedingJoinPoint joinPoint) {
         boolean intercept = false;
         final Aegis aegis = getAegis(joinPoint.getTarget());
@@ -59,9 +69,7 @@ public class AegisAspect {
             final InterceptorManager manager = InterceptorManager.getInstance();
             manager.setConfig(aegis);
             manager.setView(v);
-            manager.setAegisIdentify(ContextUtil.getAegisIdentify(joinPoint));
             intercept = manager.process();
-            Log.e("luo", intercept + "");
         }
         return intercept;
     }
@@ -72,8 +80,10 @@ public class AegisAspect {
         for (Method method : methods) {
             if (method != null && method.isAnnotationPresent(Aegis.class)) {
                 aegis = method.getAnnotation(Aegis.class);
-                Log.d(TAG, String.format("interval = %d, toastMsg = %s, disableTime = %d, strategy = %s",
-                        aegis.interval(), aegis.toastMsg(), aegis.disableTime(), aegis.strategy().name()));
+                if (aegis != null) {
+                    Log.d(TAG, String.format("interval = %d, toastMsg = %s, disableTime = %d, strategy = %s",
+                            aegis.interval(), aegis.toastMsg(), aegis.disableTime(), aegis.strategy().name()));
+                }
                 break;
             }
         }

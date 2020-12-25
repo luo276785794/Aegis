@@ -2,6 +2,7 @@ package com.wenlong.aegis.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -41,9 +42,14 @@ public final class ContextUtil {
     public static Object getThisContext(ProceedingJoinPoint point) {
         Object target = point.getTarget();
         try {
-            Field field = target.getClass().getDeclaredField("this$0");
-            field.setAccessible(true);
-            return field.get(target);
+            final Class<?> cls = target.getClass();
+            if (cls.isAnonymousClass()) {
+                Field field = target.getClass().getDeclaredField("this$0");
+                field.setAccessible(true);
+                return field.get(target);
+            } else {
+                return target;
+            }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -55,8 +61,8 @@ public final class ContextUtil {
         if (obj instanceof AegisIdentify) {
             AegisIdentify aegisIdentify = (AegisIdentify) obj;
             Object identify = aegisIdentify.getIdentify();
-            if (identify != null && !isWrapperType(identify.getClass())) {
-                throw new IllegalArgumentException("Aegis identify only primitive type");
+            if (identify != null && TextUtils.isEmpty(identify.toString())) {
+                throw new IllegalArgumentException("Aegis identify can't be empty");
             }
             return (AegisIdentify) obj;
         }

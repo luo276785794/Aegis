@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="aegis_id" type="id" />
+    <item name="view_id" type="id" />
+    <item name="trigger_count" type="id" />
+    <item name="barrier_time" type="id" />
 </resources>

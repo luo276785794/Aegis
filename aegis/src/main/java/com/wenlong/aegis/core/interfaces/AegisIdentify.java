@@ -4,5 +4,5 @@ public interface AegisIdentify {
     /**
      * only primitive type
      */
-    Object getIdentify();
+    String getIdentify();
 }
