@@ -46,7 +46,7 @@ public @interface Aegis {
 
 
 ### 流程图
-![image.png](http://pfp.ps.netease.com/kmspvt/file/5fe6fc552dcade776730957ak4XL1gcO01?sign=1hXOJuxaFUVV74i7cpBcVxvGifs=&expire=1609091906)
+![image.png](flow.png)
 
 1. 首先需要检查`Xposed`, 通过3种方法结合来检测
     - 通过`PackageManager`遍历已安装应用是否有Xposed包名(`de.robv.android.xposed.installer`).在`Android 11`只能查询到自己应用和系统应用的信息，查不到其他应用的信息了, 必须增加`QUERY_ALL_PACKAGES`权限. 
